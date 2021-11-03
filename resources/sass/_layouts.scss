@@ -38,8 +38,13 @@ ol {
 
 .my-container {
     background-color: #333a40;
-    height: calc(100vh - 55px);
     position: relative;
+    min-height: 100vh;
+    color: #ffffff;
+    margin: 0 auto;
+    padding: 50px;
+    text-align: center;
+    max-width: 100%;
 }
 body {
     font-size: 22px;
@@ -161,3 +166,180 @@ body {
     transform: translateX(10px);
     opacity: 0;
   }
+  .posts-item {   
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #fff;
+    margin-bottom: 40px;
+}
+@media screen and (min-width: 768px) {
+    .posts-item {   
+        width: calc(50% - 10px);
+        margin-right: 10px;
+    }
+}
+@media screen and (min-width: 992px) {
+    .posts-item {   
+        width: calc(25% - 10px);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+}
+.posts-item .delate,
+.posts-item .edit {
+    width: 20px;
+    margin-right: 20px;
+    cursor: pointer;
+}
+.posts-item img {
+    max-width: 100%;
+}
+.posts-item a {
+    display: block;
+    cursor: pointer;
+    margin-right: 20px;
+}
+.posts-item a:hover h2{
+    text-decoration: underline;
+}
+.posts-item h2 {
+    margin-bottom: 20px;
+    font-size: 16px;
+    color: pink;
+    text-transform: capitalize;
+}
+.posts-item p {
+    font-size: 14px;
+}
+.posts-item a {
+    font-size: 14px;
+    color: rgb(220, 114, 114);
+}
+.post-navigation {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+}
+.edit-post-popup {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    z-index: 2;
+    background-color: #fff;
+    width: 700px;
+    max-width: 90%;
+}
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    &:after, &:before {
+        content: "";
+        position: absolute;
+        width: 2px;
+        height: 100%;
+        background-color:#333a40;
+        top: 0;
+    }
+    &:after {
+        transform: rotate(-45deg);
+    }
+    &:before {
+        transform: rotate(45deg);
+    }
+}
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    &:after, &:before {
+        content: "";
+        position: absolute;
+        width: 2px;
+        height: 100%;
+        background-color:#333a40;
+        top: 0;
+    }
+    &:after {
+        transform: rotate(-45deg);
+    }
+    &:before {
+        transform: rotate(45deg);
+    }
+
+}
+.edit-post-popup {
+    color: #333a40;
+    padding: 40px;
+   
+    h2 {
+        color: #333a40;
+        font-size: 30px;
+    }
+    textarea {
+        width: 100%;
+        padding: 5px;
+        resize: none;
+        min-height: 93px;
+    }
+    .savePost {
+        margin: 0 auto;
+        padding: 10px 20px;
+        color: #ffffff;
+        background-color: #333a40;
+        margin: 0 auto;
+        border-radius: 10px;
+        cursor: pointer;
+        border: none;
+        &:hover {
+            background-color: orange;
+        }
+    }
+}
+.edit-post.body textarea {
+    height: 190px;
+}
+.errors {
+    color: red;
+    p {
+        margin-bottom: 5px;
+    }
+}
+
+.comments-block {
+    margin: 40px 0;
+    li {
+        position: relative;
+        text-align: start;
+        list-style-type: none;
+        margin-bottom: 20px;
+        &::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 0;
+            height: 2px;
+            width: 100%;
+            background: #ffffff60;
+        }
+    }
+    .name {
+        font-size: 14px;
+    }
+    .title {
+        font-size: 24px;
+        font-weight: 600;
+    }
+    .body {
+        font-size: 16px;
+    }
+}

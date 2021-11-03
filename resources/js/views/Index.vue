@@ -2,8 +2,6 @@
         <div class="container">
             <h1>Это главная страница</h1>
             <p><strong>{{post.title}}</strong></p>
-            <!-- <p>{{post.body}}</p>
-            {{error.message}} -->
         </div>
 </template>
 

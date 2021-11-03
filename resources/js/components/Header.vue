@@ -33,13 +33,16 @@
                         href: "/todo"
                     },
                     {
-                        title: "Form",
-                        href: "/form"
-                    }
-                    ,
+                        title: "Create Post",
+                        href: "/CreatePost"
+                    },
                     {
                         title: "Blog",
                         href: "/blog"
+                    },
+                    {
+                        title: "Gallery",
+                        href: "/gallery"
                     }
                 ]
             }

@@ -6,13 +6,15 @@ Vue.use(vueRouter);
 import Index from "./views/Index";
 import Product from "./views/Product";
 import ToDo from "./views/ToDo";
-import Form from "./views/Form";
+import createPost from "./views/CreatePost";
 import Blog from "./views/Blog";
+import Post from "./views/Post";
+import Gallery from "./views/Gallery";
 
 const routes = [
     { 
         path: '/', 
-        component: Index 
+        component: Index
     },
     { 
         path: '/product', 
@@ -23,12 +25,20 @@ const routes = [
         component: ToDo, 
     },
     { 
-        path: '/form', 
-        component: Form, 
+        path: '/CreatePost', 
+        component: createPost
     },
     { 
-        path: '/blog', 
-        component: Blog, 
+        path: '/blog',
+        component: Blog
+    },
+    { 
+        path: '/post/:id',
+        component: Post
+    },
+    { 
+        path: '/gallery',
+        component: Gallery
     }
 ];
 

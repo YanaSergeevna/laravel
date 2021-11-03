@@ -21,7 +21,6 @@ window.Vue = require('vue');
 
 Vue.component('v-header', require('./components/Header.vue').default);
 
-
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -30,7 +29,10 @@ Vue.component('v-header', require('./components/Header.vue').default);
 
 import router from "./router";
 
+
 const app = new Vue({
     el: '#app',
     router,
 });
+
+window.Swiper = require('swiper');
