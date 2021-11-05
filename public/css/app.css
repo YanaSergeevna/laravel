@@ -11391,7 +11391,7 @@ body {
   color: #dc7272;
 }
 
-.post-navigation {
+.a-post-navigation {
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -11538,5 +11538,14 @@ body {
 
 .comments-block .body {
   font-size: 16px;
+}
+
+.select-box {
+  position: relative;
+  padding: 5px 10px;
+  background-color: #51a2c7;
+  color: #000000;
+  display: inline-flex;
+  margin: 30px 0;
 }
 

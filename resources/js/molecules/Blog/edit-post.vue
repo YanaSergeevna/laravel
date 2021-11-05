@@ -1,6 +1,6 @@
 <template lang="">
     <div class="edit-post-popup">
-        <spin v-if="loading" class="black"></spin>
+        <a-spin v-if="loading" class="black"></a-spin>
         <h2>Editing</h2>
         <div class="close" @click="$emit('closePopup')"></div>
         <form>
@@ -13,14 +13,14 @@
             <div class="errors" v-if="errors.length">
                 <p v-for="error in errors">{{ error }}</p>
             </div>
-            <div class="post-navigation">
+            <div class="a-post-navigation">
                 <button  @click.prevent="updateData" class="savePost">Save changes</button>
             </div>
         </form>
     </div>
 </template>
 <script>
-import spin from "../Spin.vue";
+import spin from "../../atoms/spin.vue";
 export default {
     name: 'editPost',
     props: {
@@ -86,7 +86,7 @@ export default {
         }
     },
     components: {
-        spin
+        "a-spin": spin,
     }
 }
 </script>

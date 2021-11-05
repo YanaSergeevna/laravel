@@ -1,26 +1,29 @@
 <template>
         <div class="my-container">
-            <div class="create-post">
-                <h1>{{ formTitle }}</h1>
+            <div class="o-create-post">
+                <h1 class="a-form-title">{{ formTitle }}</h1>
                 <form v-on:submit.prevent="submitForm">
-                    <div class="form-group" >
+
+                    <div class="m-form-group">
                         <label for="">Title</label>
-                        <input type="text" v-model="form.title">
+                        <a-form-input 
+                          @model="post.title" />
                     </div>
-                    <div class="form-group">
+                    <div class="m-form-group">
                         <label for="">Content</label>
-                        <textarea name="" id="" rows="5" v-model="form.body"></textarea>
+                        <a-form-textarea 
+                          @model="post.body" />
                     </div>
-                    <div class="form-group">
+                    <div class="m-form-group">
                         <label for="">Author</label>
-                        <select name="" id="">
-                            <option value="" v-for="user in userData" :key="user.id">{{ user.name }}</option>
-                        </select>
+                        <a-form-select
+                          @change-author="authorChanged"/>
                     </div>
+
                     <div v-if="error">Ошибка! Проверте заполнение полей</div>
                     <div class="form-group">
                         <button class="btn btn-primary" @click.prevent="store">
-                             <spin v-if="loading"></spin>
+                             <a-spin v-if="loading"></a-spin>
                              <span v-else>Submit</span></button>
                     </div>
                 </form>
@@ -29,35 +32,33 @@
 </template>
 
 <script>
-    import spin from "../components/Spin.vue";
+    import Spin from "../atoms/spin.vue";
+    import FormSelect from "../atoms/form/form-select.vue";
+    import FormInput from "../atoms/form/form-input.vue";
+    import FormTextarea from "../atoms/form/form-textarea.vue";
+
     import axios from 'axios';
     export default {
         name: "createPost",
         data() {
             return {
                 loading: false,
-                formTitle: "Now create your post",
-                userData: {},
-                form: {
+                formTitle: "Create a new post",
+                post: {
                     title: "",
                     body: "",
+                    author: ""
                 },
                 error: false
             }
         },
         mounted () {
-            this.getUsersName();
+            
         },
         methods:{
-            getUsersName() {
-                axios.get('https://jsonplaceholder.typicode.com/users').
-                    then( result => { 
-                    this.userData = result.data;
-                })
-            },
             store() {
                 this.loading = true;
-                axios.post('https://jsonplaceholder.typicode.com/posts', this.form, {
+                axios.post('https://jsonplaceholder.typicode.com/posts', this.post, {
                     headers: {
                         "Content-type": "application/json"
                     }
@@ -67,10 +68,17 @@
                     this.error = true
                     this.loading = false;
                 })
+            },
+            authorChanged(author) {
+                this.post.author = author;
+                console.log("Month changed. Selected ID: ", author);
             }
         },
         components: {
-            spin
+            "a-spin": Spin ,
+            "a-form-select": FormSelect,
+            "a-form-input": FormInput,
+            "a-form-textarea": FormTextarea,
         }
         
     }
@@ -96,7 +104,7 @@
     .btn-primary {
         position: relative;
     }
-    .lds-spinner {
+    .lds-a-spinner {
         width: 20px;
         height: 20px;
         left: 0;

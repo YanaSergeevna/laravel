@@ -3,13 +3,13 @@ import Vue from 'vue';
 
 Vue.use(vueRouter);
 
-import Index from "./views/Index";
-import Product from "./views/Product";
-import ToDo from "./views/ToDo";
-import createPost from "./views/CreatePost";
-import Blog from "./views/Blog";
-import Post from "./views/Post";
-import Gallery from "./views/Gallery";
+import Index from "./pages/Index";
+import Product from "./pages/Product";
+import ToDo from "./pages/ToDo";
+import createPost from "./pages/CreatePost";
+import Blog from "./pages/Blog";
+import Post from "./pages/Post";
+import Gallery from "./pages/Gallery";
 
 const routes = [
     { 

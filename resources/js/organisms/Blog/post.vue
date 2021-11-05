@@ -1,30 +1,30 @@
 <template lang="">
     <div>
-        <div class="edit-post title">
+        <div class="a-post-title">
             <h2>{{title}}</h2>
         </div>
-        <div class="edit-post body">
+        <div class="a-post-body">
             <p>{{body}}</p>
         </div>
-        <div class="post-navigation">
+        <div class="a-post-navigation">
             <router-link :to="'/post/' + id">Read more</router-link>
             <div class="delate"  @click="removePost(index, id)"><img src="images/dustbin.svg"></div>
             <div class="edit" @click="editPost()"><img src="images/pencil.svg"></div>
         </div>
-        <edit-post 
+        <m-edit-post 
             v-if="edit" 
             :title="title"
             :body="body"
             v-on:closePopup="edit = false"
             @update-title="updateTitle"
             @update-body="updateBody"
-        ></edit-post>
+        ></m-edit-post>
     </div>
 </template>
 <script>
-import editPost from "./EditPost.vue";
+import EditPost from "../../molecules/Blog/edit-post.vue";
 export default {
-    name: 'post',
+    name: 'edit-post',
     data: () => ({
         edit: false
     }),
@@ -64,7 +64,7 @@ export default {
         }
     },
     components: {
-        editPost
+        "m-edit-post": EditPost
     }
 }
 </script>

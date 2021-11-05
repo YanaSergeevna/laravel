@@ -36,8 +36,6 @@ export default {
                 this.not_found = true
             })
         }
-    },
-    components: {
     }
 }
 </script>

@@ -8,7 +8,7 @@
                         :title="post.title"
                         :body="post.body"
                         :id="post.id"
-                        :removePost ="removePost"
+                        :removePost="removePost"
                         :index="index" />
                 </div>
             </div>

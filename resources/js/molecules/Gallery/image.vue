@@ -1,10 +1,12 @@
 <template>
         <div>
             <div  @click="openBigImage"><img :src="thumbnailUrl" :alt="title"></div>
-            <div v-if="bigImage" class="popupImage" @click="closePopup">
-                <div class="close"></div>
-                <img :src="url" :alt="title" @click.stop.prevent>
-            </div>
+            <transition name="fade">
+                <div v-if="bigImage" class="popupImage" @click="closePopup">
+                    <div class="close"></div>
+                    <img :src="url" :alt="title" @click.stop.prevent>
+                </div>
+            </transition>
         </div>
 </template>
 
@@ -57,5 +59,11 @@ import axios from 'axios';
         display: flex;
         justify-content: center;
         align-items: center;
+    }
+    .fade-enter-active, .fade-leave-active {
+    transition: opacity .5s;
+    }
+    .fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
+    opacity: 0;
     }
 </style>
