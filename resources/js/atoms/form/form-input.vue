@@ -1,5 +1,7 @@
 <template>
-        <input type="text">
+        <input type="text" 
+            @change="changeTitle"
+            v-model="title">
 </template>
 
 <script>
@@ -7,12 +9,15 @@
         name: "form-select",
         data() {
             return {
-                
+                title: ''
             }
         },
         mounted () {
         },
         methods:{
+            changeTitle() {
+                this.$emit('change-title', this.title);
+            }
         }
         
     }

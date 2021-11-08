@@ -7,12 +7,12 @@
                     <div class="m-form-group">
                         <label for="">Title</label>
                         <a-form-input 
-                          @model="post.title" />
+                          @change-title="titleChanged" />
                     </div>
                     <div class="m-form-group">
                         <label for="">Content</label>
                         <a-form-textarea 
-                          @model="post.body" />
+                          @change-body="bodyChanged"/>
                     </div>
                     <div class="m-form-group">
                         <label for="">Author</label>
@@ -20,11 +20,11 @@
                           @change-author="authorChanged"/>
                     </div>
 
-                    <div v-if="error">Ошибка! Проверте заполнение полей</div>
+                    <a-form-error v-if="error" />
+                    
                     <div class="form-group">
-                        <button class="btn btn-primary" @click.prevent="store">
-                             <a-spin v-if="loading"></a-spin>
-                             <span v-else>Submit</span></button>
+                        <a-form-button 
+                            v-on:store="store"/>
                     </div>
                 </form>
             </div>
@@ -36,6 +36,9 @@
     import FormSelect from "../atoms/form/form-select.vue";
     import FormInput from "../atoms/form/form-input.vue";
     import FormTextarea from "../atoms/form/form-textarea.vue";
+    import FormError from "../atoms/form/form-error.vue";
+    import FormButton from "../atoms/form/form-button.vue";
+
 
     import axios from 'axios';
     export default {
@@ -53,25 +56,45 @@
             }
         },
         mounted () {
+            console.log(this.post)
             
         },
         methods:{
             store() {
-                this.loading = true;
-                axios.post('https://jsonplaceholder.typicode.com/posts', this.post, {
-                    headers: {
-                        "Content-type": "application/json"
-                    }
-                }).then( result => {
-                    this.$router.push('/post/' + result.data.id)
-                }).catch(err => {
+                let error = this.checkForm();
+                if(error) {
+                    this.loading = true;
+                    axios.post('https://jsonplaceholder.typicode.com/posts', this.post, {
+                        headers: {
+                            "Content-type": "application/json"
+                        }
+                    }).then( result => {
+                        this.$router.push('/post/' + result.data.id)
+                    }).catch(err => {
+                        this.error = true
+                        this.loading = false;
+                    })
+                } else {
                     this.error = true
-                    this.loading = false;
-                })
+                }
             },
             authorChanged(author) {
                 this.post.author = author;
-                console.log("Month changed. Selected ID: ", author);
+            },
+            titleChanged(title) {
+                this.post.title = title;
+            },
+            bodyChanged(body) {
+                this.post.body = body;
+            },
+            checkForm: function () {
+                console.log(this.post.title)
+                console.log(this.post.body)
+                if (this.post.title == "" || this.post.body == "" || this.post.author == "" ) {
+                 return false 
+                } else {
+                 return true;
+                }
             }
         },
         components: {
@@ -79,6 +102,8 @@
             "a-form-select": FormSelect,
             "a-form-input": FormInput,
             "a-form-textarea": FormTextarea,
+            "a-form-error": FormError,
+            "a-form-button": FormButton,
         }
         
     }
@@ -86,29 +111,24 @@
 
 
 <style scoped>
-    .create-post {
+    .o-create-post {
         color: #ffffff;
         width: max-content;
         margin: 0 auto;
         padding: 50px;
         text-align: center;
+        width: 600px;
+        max-width: 100%;
     }
-    .create-post 
+    .o-create-post 
         label {
             text-align: left;
         }
-    .create-post 
+    .o-create-post 
         input,textarea, select {
             width: 100%;
         }
     .btn-primary {
         position: relative;
-    }
-    .lds-a-spinner {
-        width: 20px;
-        height: 20px;
-        left: 0;
-        top: 0;
-        transform: translate(0, -50%);
     }
 </style>

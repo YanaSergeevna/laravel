@@ -1,6 +1,6 @@
 <template>
     <nav class="container navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">{{menu}}</a>
+        <a class="navbar-brand" href="/"><img src="images/logo.svg" alt=""></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -21,10 +21,6 @@
                 menu: 'Navbar',
                 links: [
                     {
-                        title: "Главная",
-                        href: "/"
-                    },
-                    {
                         title: "Product",
                         href: "/product"
                     },
@@ -43,6 +39,10 @@
                     {
                         title: "Gallery",
                         href: "/gallery"
+                    },
+                    {
+                        title: "To do new",
+                        href: "/todo-new"
                     }
                 ]
             }
@@ -52,5 +52,11 @@
 </script>
 
 
-<style scoped>
+<style lang="scss" scoped>
+  .navbar-brand {
+      width: 50px;
+      img {
+          max-width: 100%;
+      }
+  }
 </style>

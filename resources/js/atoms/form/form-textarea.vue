@@ -1,5 +1,7 @@
 <template>
-        <textarea name="" id="" rows="5"></textarea>
+        <textarea name="" id="" rows="5" 
+            @change="changeBody"
+            v-model="body"></textarea>
 </template>
 
 <script>
@@ -7,7 +9,7 @@
         name: "form-select",
         data() {
             return {
-                
+                body:''
             }
         },
         props: {
@@ -16,8 +18,10 @@
         mounted () {
         },
         methods:{
+            changeBody() {
+                this.$emit('change-body', this.body);
+            }
         }
-        
     }
 </script>
 
