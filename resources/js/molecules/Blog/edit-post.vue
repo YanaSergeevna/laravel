@@ -5,7 +5,7 @@
         <div class="close" @click="$emit('closePopup')"></div>
         <form>
             <div class="edit-post title">
-                <textarea v-model="newTitle" ></textarea>
+                <textarea v-model="newTitle"></textarea>
             </div>
             <div class="edit-post body">
                 <textarea v-model="newBody"></textarea>

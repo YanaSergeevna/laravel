@@ -1,11 +1,11 @@
 <template>
         <select name=""
-            @change="changeAuthor()"
+            @change="changeAuthor"
             v-model="selectedAuthor">
-            <option value="" 
+            <option
                 v-for="user in userData" 
                 :key="user.id"
-                
+                :value="user.name"
             >{{ user.name }}</option>
         </select>
 </template>

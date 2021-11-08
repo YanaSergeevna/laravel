@@ -10,6 +10,7 @@ import createPost from "./pages/CreatePost";
 import Blog from "./pages/Blog";
 import Post from "./pages/Post";
 import Gallery from "./pages/Gallery";
+import ToDoNew from "./pages/ToDo-new";
 
 const routes = [
     { 
@@ -39,6 +40,10 @@ const routes = [
     { 
         path: '/gallery',
         component: Gallery
+    },
+    { 
+        path: '/todo-new',
+        component: ToDoNew
     }
 ];
 
