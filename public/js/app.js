@@ -3109,13 +3109,131 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "todo-new",
   data: function data() {
-    return {};
+    return {
+      months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+      selectedMonth: '',
+      activeYear: new Date().getFullYear()
+    };
   },
-  methods: {},
+  mounted: function mounted() {
+    this.Calendar3("month-desk", new Date().getFullYear(), new Date().getMonth());
+  },
+  methods: {
+    Calendar3: function Calendar3(id, year, month) {
+      var lastDay = new Date(year, month + 1, 0).getDate(),
+          lastDate = new Date(year, month, lastDay),
+          weekDayLast = lastDate.getDay(),
+          weekDayFirst = new Date(lastDate.getFullYear(), lastDate.getMonth(), 1).getDay(),
+          calendar = '<div>',
+          selectedMonth = document.querySelector('#' + id + ' option[value="' + lastDate.getMonth() + '"]'),
+          g = document.querySelector('#' + id + ' input');
+      this.selectedMonth = selectedMonth.textContent;
+      console.log(calendar);
+      console.log(g);
+      var lastmonth = 32 - new Date(g.value, selectedMonth.value - 1, 32).getDate();
+
+      if (weekDayFirst != 0) {
+        for (var i = weekDayFirst; i > 1; i--) {
+          calendar += '<div style="color: Gray">' + (lastmonth - i);
+        }
+      } else {
+        for (var i = 6; i > 0; i--) {
+          calendar += '<div style="color: Gray">' + (lastmonth - i);
+        }
+      }
+
+      for (var i = 1; i <= lastDay; i++) {
+        if (i == new Date().getDate() && lastDate.getFullYear() == new Date().getFullYear() && lastDate.getMonth() == new Date().getMonth()) {
+          calendar += '<div class="today">' + i;
+        } else {
+          calendar += '<div>' + i;
+        }
+
+        if (new Date(lastDate.getFullYear(), lastDate.getMonth(), i).getDay() == 0) {
+          calendar += '<div>';
+        }
+      }
+
+      var dayaftermonth = 1;
+
+      for (var i = weekDayLast; i < 8; i++) {
+        if (i > weekDayLast) {
+          calendar += '<div style="color: Gray">' + dayaftermonth;
+          dayaftermonth++;
+        }
+      }
+
+      document.querySelector('#' + id + ' .js-month-days').innerHTML = calendar;
+      g.value = lastDate.getFullYear();
+      selectedMonth.selected = true;
+
+      if (document.querySelectorAll('#' + id + ' .js-month-days div').length < 6) {
+        document.querySelector('#' + id + ' .js-month-days').innerHTML += '<div><div>&nbsp;<div>&nbsp;<div>&nbsp;<div>&nbsp;<div>&nbsp;<div>&nbsp;<div>&nbsp;';
+      }
+
+      document.querySelector('#' + id + ' option[value="' + new Date().getMonth() + '"]').style.color = 'rgb(230, 33, 33)'; // в выпадающем списке выделен текущий месяц
+    },
+    changeMouth: function changeMouth(event) {
+      var inputValue = document.querySelector('#month-desk input').value;
+      console.log(inputValue);
+
+      if (event.target.selectedIndex == 1) {
+        console.log(11111);
+        inputValue = inputValue - 1;
+      } else if (event.target.selectedIndex == 11) {
+        console.log(222222);
+        inputValue = inputValue + 1;
+      }
+
+      console.log(33333);
+      this.Calendar3("month-desk", inputValue, parseFloat(document.querySelector('#month-desk select').options[document.querySelector('#month-desk select').selectedIndex].value));
+    },
+    getMounth: function getMounth(direction) {
+      var select = document.querySelector('.js-month-select'),
+          monthSelectedIndex = select.selectedIndex;
+
+      if (direction == 'prev') {
+        monthSelectedIndex != 0 ? select.selectedIndex = monthSelectedIndex - 1 : select.selectedIndex = 11;
+      } else if (direction == 'next') {
+        monthSelectedIndex != 11 ? select.selectedIndex = monthSelectedIndex + 1 : select.selectedIndex = 0;
+      }
+
+      select.dispatchEvent(new Event('change'));
+    }
+  },
   computed: {},
   components: {
     "o-todo-week": _organisms_todo_todo_week_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
@@ -7638,7 +7756,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, ".o-todo-wrapper[data-v-f509347c] {\n  width: 100%;\n  min-height: 100vh;\n  background-repeat: no-repeat;\n  background-size: cover;\n  background-position: top;\n  background-attachment: fixed;\n}\n.o-todo-wrapper h1[data-v-f509347c] {\n  font-family: \"Courgette\", cursive;\n}\n.a-todo-title[data-v-f509347c] {\n  text-align: center;\n  font-size: 40px;\n  margin-top: 40px;\n}", ""]);
+exports.push([module.i, ".o-todo-wrapper[data-v-f509347c] {\n  width: 100%;\n  min-height: 100vh;\n  background-repeat: no-repeat;\n  background-size: cover;\n  background-position: top;\n  background-attachment: fixed;\n  margin: 40px auto;\n}\n.o-todo-wrapper h1[data-v-f509347c] {\n  font-family: \"Courgette\", cursive;\n}\n.a-month-title[data-v-f509347c] {\n  font-family: \"Courgette\", cursive;\n  text-align: start;\n}\n.a-todo-title[data-v-f509347c] {\n  text-align: center;\n  font-size: 40px;\n}\n.tg td[data-v-f509347c] {\n  font-family: Arial, sans-serif;\n  font-size: 14px;\n  padding: 5px 8px;\n  border-style: solid;\n  border-width: 1px;\n  overflow: hidden;\n  word-break: normal;\n  border-color: #f0f0f0;\n  color: #333;\n  background-color: #fff;\n}\n.tg th[data-v-f509347c] {\n  font-family: Arial, sans-serif;\n  font-size: 14px;\n  font-weight: normal;\n  padding: 5px 10px;\n  border-style: solid;\n  border-width: 1px;\n  overflow: hidden;\n  word-break: normal;\n  border-color: #f0f0f0;\n  color: #333;\n  background-color: #f0f0f0;\n}\n.tg .tg-s6z2[data-v-f509347c] {\n  text-align: center;\n}\n.tg-wrap[data-v-f509347c] {\n  float: none;\n  position: relative;\n  padding: 3px;\n}\n@media screen and (max-width: 767px) {\n.tg[data-v-f509347c] {\n    width: auto !important;\n}\n.tg col[data-v-f509347c] {\n    width: auto !important;\n}\n.tg-wrap[data-v-f509347c] {\n    overflow-x: auto;\n    -webkit-overflow-scrolling: touch;\n    margin: auto 0px;\n}\n}\n#calendar3 thead tr[data-v-f509347c]:last-child, #calendar3 tbody td[data-v-f509347c] {\n  text-align: center;\n}\n#calendar3 thead tr[data-v-f509347c]:last-child {\n  font-size: small;\n  color: #555555;\n}\n#calendar3 tbody td[data-v-f509347c] {\n  color: #2c567a;\n}\n#calendar3 tbody td[data-v-f509347c]:nth-child(n+6), #calendar3 .holiday[data-v-f509347c] {\n  color: #7e0d01;\n}\n#calendar3 tbody td.today[data-v-f509347c] {\n  outline: 3px solid red;\n}\nth.tg-s6z2:nth-child(1) > select[data-v-f509347c]:nth-child(1) {\n  padding-left: 15px;\n  height: 30px;\n  border-radius: 3px;\n}", ""]);
 
 // exports
 
@@ -54197,7 +54315,116 @@ var render = function() {
         [
           _c("o-todo-week"),
           _vm._v(" "),
-          _c("h1", { staticClass: "a-todo-title" }, [_vm._v("Weekly planner")])
+          _c("h1", { staticClass: "a-todo-title" }, [_vm._v("Weekly planner")]),
+          _vm._v(" "),
+          _c("div", { staticClass: "look-calendar" }, [
+            _c("div", { staticClass: "tg-wrap" }, [
+              _c("div", { staticClass: "tg", attrs: { id: "month-desk" } }, [
+                _c("div", { staticClass: "tg-s6z2", attrs: { colspan: "4" } }, [
+                  _c(
+                    "select",
+                    {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: false,
+                          expression: "false"
+                        }
+                      ],
+                      staticClass: "js-month-select",
+                      on: {
+                        change: function($event) {
+                          return _vm.changeMouth($event)
+                        }
+                      }
+                    },
+                    _vm._l(_vm.months, function(month, index) {
+                      return _c(
+                        "option",
+                        { key: index, domProps: { value: index } },
+                        [
+                          _vm._v(
+                            "   \n                                " +
+                              _vm._s(month) +
+                              "\n                            "
+                          )
+                        ]
+                      )
+                    }),
+                    0
+                  ),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.activeYear,
+                        expression: "activeYear"
+                      }
+                    ],
+                    attrs: {
+                      type: "number",
+                      value: "",
+                      min: "0",
+                      max: "9999",
+                      size: "4"
+                    },
+                    domProps: { value: _vm.activeYear },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.activeYear = $event.target.value
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("h2", { staticClass: "a-month-title" }, [
+                    _vm._v(
+                      "\n                            " +
+                        _vm._s(_vm.selectedMonth) +
+                        " " +
+                        _vm._s(_vm.activeYear) +
+                        "\n                        "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "m-month-navigation" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "a-mount-button__prev",
+                        on: {
+                          click: function($event) {
+                            return _vm.getMounth("prev")
+                          }
+                        }
+                      },
+                      [_vm._v("<")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "a-mount-button__next",
+                        on: {
+                          click: function($event) {
+                            return _vm.getMounth("next")
+                          }
+                        }
+                      },
+                      [_vm._v(">")]
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "m-month-list js-month-days" })
+              ])
+            ])
+          ])
         ],
         1
       )
