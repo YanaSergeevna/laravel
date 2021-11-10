@@ -343,6 +343,9 @@ body {
         font-size: 16px;
     }
 }
+ul {
+    padding: 0;
+}
 .select-box {
     position: relative;
     padding: 5px 10px;
@@ -354,4 +357,13 @@ body {
 .container {
     max-width: 1380px;
     padding: 0 40px;
+}
+.m-month-list {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    li {
+        width: calc(100% / 7);
+        list-style-type: none;
+    }
 }

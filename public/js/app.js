@@ -2440,6 +2440,33 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/molecules/todo-list-item.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/molecules/todo-list-item.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: 'todo-list-item',
+  props: {},
+  data: function data() {
+    return {};
+  },
+  mounted: function mounted() {},
+  methods: {},
+  components: {}
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/organisms/Blog/post.vue?vue&type=script&lang=js&":
 /*!*******************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/organisms/Blog/post.vue?vue&type=script&lang=js& ***!
@@ -3099,6 +3126,7 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _organisms_todo_todo_week_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../organisms/todo/todo-week.vue */ "./resources/js/organisms/todo/todo-week.vue");
+/* harmony import */ var _molecules_todo_list_item_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../molecules/todo-list-item.vue */ "./resources/js/molecules/todo-list-item.vue");
 //
 //
 //
@@ -3138,105 +3166,114 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "todo-new",
   data: function data() {
     return {
       months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+      weekDays: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
       selectedMonth: '',
-      activeYear: new Date().getFullYear()
+      activeYear: new Date().getFullYear(),
+      monthStartDayIndex: "",
+      monthEndDayIndex: "",
+      todayDateIndex: '',
+      dayInActiveMonth: []
     };
   },
   mounted: function mounted() {
-    this.Calendar3("month-desk", new Date().getFullYear(), new Date().getMonth());
+    this.calendar("month-desk", new Date().getFullYear(), new Date().getMonth());
   },
   methods: {
-    Calendar3: function Calendar3(id, year, month) {
+    calendar: function calendar(id, year, month) {
       var lastDay = new Date(year, month + 1, 0).getDate(),
           lastDate = new Date(year, month, lastDay),
           weekDayLast = lastDate.getDay(),
           weekDayFirst = new Date(lastDate.getFullYear(), lastDate.getMonth(), 1).getDay(),
-          calendar = '<div>',
-          selectedMonth = document.querySelector('#' + id + ' option[value="' + lastDate.getMonth() + '"]'),
-          g = document.querySelector('#' + id + ' input');
-      this.selectedMonth = selectedMonth.textContent;
-      console.log(calendar);
-      console.log(g);
-      var lastmonth = 32 - new Date(g.value, selectedMonth.value - 1, 32).getDate();
+          selectedMonth = document.querySelector('#' + id + ' option[value="' + lastDate.getMonth() + '"]');
+      this.dayInActiveMonth = [];
+      this.todayDateIndex = null;
+      this.selectedMonth = lastDate.getMonth();
+      this.monthEndDayIndex = '';
+      this.monthStartDayIndex = weekDayFirst - 1;
+      console.log(selectedMonth);
+      console.log(this.selectedMonth);
+      var lastmonth = 32 - new Date(this.activeYear, selectedMonth.value - 1, 32).getDate();
 
       if (weekDayFirst != 0) {
         for (var i = weekDayFirst; i > 1; i--) {
-          calendar += '<div style="color: Gray">' + (lastmonth - i);
+          this.dayInActiveMonth.push(lastmonth - i);
         }
       } else {
         for (var i = 6; i > 0; i--) {
-          calendar += '<div style="color: Gray">' + (lastmonth - i);
+          this.dayInActiveMonth.push(lastmonth - i);
         }
       }
 
       for (var i = 1; i <= lastDay; i++) {
         if (i == new Date().getDate() && lastDate.getFullYear() == new Date().getFullYear() && lastDate.getMonth() == new Date().getMonth()) {
-          calendar += '<div class="today">' + i;
-        } else {
-          calendar += '<div>' + i;
+          this.todayDateIndex = i - 1;
         }
 
-        if (new Date(lastDate.getFullYear(), lastDate.getMonth(), i).getDay() == 0) {
-          calendar += '<div>';
-        }
+        this.dayInActiveMonth.push(i);
       }
 
+      this.monthEndDayIndex = this.dayInActiveMonth.length - 1;
       var dayaftermonth = 1;
 
-      for (var i = weekDayLast; i < 8; i++) {
-        if (i > weekDayLast) {
-          calendar += '<div style="color: Gray">' + dayaftermonth;
-          dayaftermonth++;
+      if (weekDayLast != 0) {
+        for (var i = weekDayLast; i < 8; i++) {
+          if (i > weekDayLast) {
+            this.dayInActiveMonth.push(dayaftermonth);
+            dayaftermonth++;
+          }
         }
       }
 
-      document.querySelector('#' + id + ' .js-month-days').innerHTML = calendar;
-      g.value = lastDate.getFullYear();
+      this.activeYear = lastDate.getFullYear();
       selectedMonth.selected = true;
-
-      if (document.querySelectorAll('#' + id + ' .js-month-days div').length < 6) {
-        document.querySelector('#' + id + ' .js-month-days').innerHTML += '<div><div>&nbsp;<div>&nbsp;<div>&nbsp;<div>&nbsp;<div>&nbsp;<div>&nbsp;<div>&nbsp;';
-      }
-
-      document.querySelector('#' + id + ' option[value="' + new Date().getMonth() + '"]').style.color = 'rgb(230, 33, 33)'; // в выпадающем списке выделен текущий месяц
-    },
-    changeMouth: function changeMouth(event) {
-      var inputValue = document.querySelector('#month-desk input').value;
-      console.log(inputValue);
-
-      if (event.target.selectedIndex == 1) {
-        console.log(11111);
-        inputValue = inputValue - 1;
-      } else if (event.target.selectedIndex == 11) {
-        console.log(222222);
-        inputValue = inputValue + 1;
-      }
-
-      console.log(33333);
-      this.Calendar3("month-desk", inputValue, parseFloat(document.querySelector('#month-desk select').options[document.querySelector('#month-desk select').selectedIndex].value));
     },
     getMounth: function getMounth(direction) {
       var select = document.querySelector('.js-month-select'),
-          monthSelectedIndex = select.selectedIndex;
+          monthSelectedIndex = select.selectedIndex,
+          yearValue = document.querySelector('#month-desk input').value;
 
       if (direction == 'prev') {
-        monthSelectedIndex != 0 ? select.selectedIndex = monthSelectedIndex - 1 : select.selectedIndex = 11;
+        if (monthSelectedIndex != 0) {
+          select.selectedIndex = monthSelectedIndex - 1;
+        } else {
+          select.selectedIndex = 11;
+          yearValue = Number(yearValue) - 1;
+        }
       } else if (direction == 'next') {
-        monthSelectedIndex != 11 ? select.selectedIndex = monthSelectedIndex + 1 : select.selectedIndex = 0;
+        if (monthSelectedIndex != 11) {
+          select.selectedIndex = monthSelectedIndex + 1;
+        } else {
+          select.selectedIndex = 0;
+          yearValue = Number(yearValue) + 1;
+        }
       }
 
-      select.dispatchEvent(new Event('change'));
+      this.activeYear = yearValue;
+      this.calendar("month-desk", yearValue, parseFloat(document.querySelector('#month-desk select').options[document.querySelector('#month-desk select').selectedIndex].value));
     }
   },
   computed: {},
   components: {
-    "o-todo-week": _organisms_todo_todo_week_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+    "o-todo-week": _organisms_todo_todo_week_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+    "m-list-item": _molecules_todo_list_item_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   }
 });
 
@@ -7756,7 +7793,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, ".o-todo-wrapper[data-v-f509347c] {\n  width: 100%;\n  min-height: 100vh;\n  background-repeat: no-repeat;\n  background-size: cover;\n  background-position: top;\n  background-attachment: fixed;\n  margin: 40px auto;\n}\n.o-todo-wrapper h1[data-v-f509347c] {\n  font-family: \"Courgette\", cursive;\n}\n.a-month-title[data-v-f509347c] {\n  font-family: \"Courgette\", cursive;\n  text-align: start;\n}\n.a-todo-title[data-v-f509347c] {\n  text-align: center;\n  font-size: 40px;\n}\n.tg td[data-v-f509347c] {\n  font-family: Arial, sans-serif;\n  font-size: 14px;\n  padding: 5px 8px;\n  border-style: solid;\n  border-width: 1px;\n  overflow: hidden;\n  word-break: normal;\n  border-color: #f0f0f0;\n  color: #333;\n  background-color: #fff;\n}\n.tg th[data-v-f509347c] {\n  font-family: Arial, sans-serif;\n  font-size: 14px;\n  font-weight: normal;\n  padding: 5px 10px;\n  border-style: solid;\n  border-width: 1px;\n  overflow: hidden;\n  word-break: normal;\n  border-color: #f0f0f0;\n  color: #333;\n  background-color: #f0f0f0;\n}\n.tg .tg-s6z2[data-v-f509347c] {\n  text-align: center;\n}\n.tg-wrap[data-v-f509347c] {\n  float: none;\n  position: relative;\n  padding: 3px;\n}\n@media screen and (max-width: 767px) {\n.tg[data-v-f509347c] {\n    width: auto !important;\n}\n.tg col[data-v-f509347c] {\n    width: auto !important;\n}\n.tg-wrap[data-v-f509347c] {\n    overflow-x: auto;\n    -webkit-overflow-scrolling: touch;\n    margin: auto 0px;\n}\n}\n#calendar3 thead tr[data-v-f509347c]:last-child, #calendar3 tbody td[data-v-f509347c] {\n  text-align: center;\n}\n#calendar3 thead tr[data-v-f509347c]:last-child {\n  font-size: small;\n  color: #555555;\n}\n#calendar3 tbody td[data-v-f509347c] {\n  color: #2c567a;\n}\n#calendar3 tbody td[data-v-f509347c]:nth-child(n+6), #calendar3 .holiday[data-v-f509347c] {\n  color: #7e0d01;\n}\n#calendar3 tbody td.today[data-v-f509347c] {\n  outline: 3px solid red;\n}\nth.tg-s6z2:nth-child(1) > select[data-v-f509347c]:nth-child(1) {\n  padding-left: 15px;\n  height: 30px;\n  border-radius: 3px;\n}", ""]);
+exports.push([module.i, ".o-todo-wrapper[data-v-f509347c] {\n  width: 100%;\n  min-height: 100vh;\n  background-repeat: no-repeat;\n  background-size: cover;\n  background-position: top;\n  background-attachment: fixed;\n  margin: 40px auto;\n}\n.o-todo-wrapper h1[data-v-f509347c] {\n  font-family: \"Courgette\", cursive;\n}\n.a-month-title[data-v-f509347c] {\n  font-family: \"Courgette\", cursive;\n  text-align: start;\n}\n.a-todo-title[data-v-f509347c] {\n  text-align: center;\n  font-size: 40px;\n}\n.m-calendar-top-line[data-v-f509347c] {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  margin: 40px 0;\n}\n.a-mount-button[data-v-f509347c] {\n  position: relative;\n  color: transparent;\n  width: 40px;\n  height: 40px;\n  background: #ffffff;\n  border-radius: 50%;\n  border: none;\n  margin: 0 5px;\n  box-shadow: none;\n  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);\n  transition: background 0.2s ease;\n}\n.a-mount-button[data-v-f509347c]:after {\n  content: \"\";\n  position: absolute;\n  width: 15px;\n  height: 15px;\n  border-bottom: 3px solid #228b22;\n  border-left: 3px solid #228b22;\n  transform: rotate(45deg);\n  transition: border-color 0.2s ease;\n}\n.a-mount-button.prev[data-v-f509347c]:after {\n  top: 12px;\n  left: 16px;\n  transform: rotate(45deg);\n}\n.a-mount-button.next[data-v-f509347c]:after {\n  top: 12px;\n  right: 14px;\n  transform: rotate(-135deg);\n}\n.a-mount-button[data-v-f509347c]:hover {\n  background: #228b22;\n}\n.a-mount-button[data-v-f509347c]:hover:after {\n  border-color: #ffffff;\n}\n.m-week-days[data-v-f509347c] {\n  display: flex;\n  justify-content: space-between;\n}\n.m-week-days__item[data-v-f509347c] {\n  flex: 1;\n  list-style: none;\n  text-align: center;\n}", ""]);
 
 // exports
 
@@ -53795,6 +53832,30 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/molecules/todo-list-item.vue?vue&type=template&id=16416dbb&scoped=true&lang=true&":
+/*!**************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/molecules/todo-list-item.vue?vue&type=template&id=16416dbb&scoped=true&lang=true& ***!
+  \**************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("li", {})
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/organisms/Blog/post.vue?vue&type=template&id=089180de&scoped=true&lang=true&":
 /*!*********************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/organisms/Blog/post.vue?vue&type=template&id=089180de&scoped=true&lang=true& ***!
@@ -54320,7 +54381,7 @@ var render = function() {
           _c("div", { staticClass: "look-calendar" }, [
             _c("div", { staticClass: "tg-wrap" }, [
               _c("div", { staticClass: "tg", attrs: { id: "month-desk" } }, [
-                _c("div", { staticClass: "tg-s6z2", attrs: { colspan: "4" } }, [
+                _c("div", { staticClass: "m-calendar-top-line" }, [
                   _c(
                     "select",
                     {
@@ -54330,12 +54391,28 @@ var render = function() {
                           rawName: "v-show",
                           value: false,
                           expression: "false"
+                        },
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.selectedMonth,
+                          expression: "selectedMonth"
                         }
                       ],
                       staticClass: "js-month-select",
                       on: {
                         change: function($event) {
-                          return _vm.changeMouth($event)
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.selectedMonth = $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
                         }
                       }
                     },
@@ -54362,6 +54439,12 @@ var render = function() {
                         rawName: "v-model",
                         value: _vm.activeYear,
                         expression: "activeYear"
+                      },
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: false,
+                        expression: "false"
                       }
                     ],
                     attrs: {
@@ -54396,7 +54479,7 @@ var render = function() {
                     _c(
                       "button",
                       {
-                        staticClass: "a-mount-button__prev",
+                        staticClass: "a-mount-button prev",
                         on: {
                           click: function($event) {
                             return _vm.getMounth("prev")
@@ -54409,7 +54492,7 @@ var render = function() {
                     _c(
                       "button",
                       {
-                        staticClass: "a-mount-button__next",
+                        staticClass: "a-mount-button next",
                         on: {
                           click: function($event) {
                             return _vm.getMounth("next")
@@ -54421,7 +54504,38 @@ var render = function() {
                   ])
                 ]),
                 _vm._v(" "),
-                _c("div", { staticClass: "m-month-list js-month-days" })
+                _c(
+                  "ul",
+                  { staticClass: "m-week-days" },
+                  _vm._l(_vm.weekDays, function(day, index) {
+                    return _c(
+                      "li",
+                      { key: index, staticClass: "m-week-days__item" },
+                      [_vm._v(_vm._s(day))]
+                    )
+                  }),
+                  0
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "m-month-list js-month-days" },
+                  _vm._l(_vm.dayInActiveMonth, function(day, index) {
+                    return _c(
+                      "li",
+                      {
+                        key: index,
+                        class: [
+                          index == _vm.todayDateIndex ? "today" : "",
+                          index > _vm.monthEndDayIndex ? "next-month-day" : "",
+                          index < _vm.monthStartDayIndex ? "prev-month-day" : ""
+                        ]
+                      },
+                      [_vm._v(_vm._s(day) + "\n                        ")]
+                    )
+                  }),
+                  0
+                )
               ])
             ])
           ])
@@ -70905,6 +71019,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_header_vue_vue_type_template_id_402df5a6_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_header_vue_vue_type_template_id_402df5a6_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/molecules/todo-list-item.vue":
+/*!***************************************************!*\
+  !*** ./resources/js/molecules/todo-list-item.vue ***!
+  \***************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _todo_list_item_vue_vue_type_template_id_16416dbb_scoped_true_lang_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./todo-list-item.vue?vue&type=template&id=16416dbb&scoped=true&lang=true& */ "./resources/js/molecules/todo-list-item.vue?vue&type=template&id=16416dbb&scoped=true&lang=true&");
+/* harmony import */ var _todo_list_item_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./todo-list-item.vue?vue&type=script&lang=js& */ "./resources/js/molecules/todo-list-item.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _todo_list_item_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _todo_list_item_vue_vue_type_template_id_16416dbb_scoped_true_lang_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _todo_list_item_vue_vue_type_template_id_16416dbb_scoped_true_lang_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "16416dbb",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/molecules/todo-list-item.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/molecules/todo-list-item.vue?vue&type=script&lang=js&":
+/*!****************************************************************************!*\
+  !*** ./resources/js/molecules/todo-list-item.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_todo_list_item_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./todo-list-item.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/molecules/todo-list-item.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_todo_list_item_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/molecules/todo-list-item.vue?vue&type=template&id=16416dbb&scoped=true&lang=true&":
+/*!********************************************************************************************************!*\
+  !*** ./resources/js/molecules/todo-list-item.vue?vue&type=template&id=16416dbb&scoped=true&lang=true& ***!
+  \********************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_todo_list_item_vue_vue_type_template_id_16416dbb_scoped_true_lang_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./todo-list-item.vue?vue&type=template&id=16416dbb&scoped=true&lang=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/molecules/todo-list-item.vue?vue&type=template&id=16416dbb&scoped=true&lang=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_todo_list_item_vue_vue_type_template_id_16416dbb_scoped_true_lang_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_todo_list_item_vue_vue_type_template_id_16416dbb_scoped_true_lang_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

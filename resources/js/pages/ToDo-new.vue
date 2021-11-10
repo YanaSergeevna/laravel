@@ -6,9 +6,8 @@
                 <div class="look-calendar">
                     <div class="tg-wrap">
                         <div id="month-desk" class="tg">
-
-                            <div class="tg-s6z2" colspan="4">
-                                <select class="js-month-select" @change="changeMouth($event)" v-show="false">
+                            <div class="m-calendar-top-line">
+                                <select class="js-month-select" v-show="false" v-model="selectedMonth">
                                     <option v-for="(month, index) in months" 
                                             :value="index" 
                                             :key="index"
@@ -16,118 +15,138 @@
                                         {{month}}
                                     </option>
                                 </select>
-                                <input type="number" value="" min="0" max="9999" size="4" v-model="activeYear">
+                                <input type="number" value="" min="0" max="9999" size="4" v-model="activeYear" v-show="false">
 
                                 <h2 class="a-month-title">
                                     {{selectedMonth}}&nbsp;{{activeYear}}
                                 </h2>
                                 
                                 <div class="m-month-navigation">
-                                    <button class="a-mount-button__prev" @click="getMounth('prev')"><</button>
-                                    <button class="a-mount-button__next" @click="getMounth('next')">></button>
+                                    <button class="a-mount-button prev" @click="getMounth('prev')"><</button>
+                                    <button class="a-mount-button next" @click="getMounth('next')">></button>
                                 </div>
                             </div>
-                            <div class="m-month-list js-month-days"></div>
+                            <ul class="m-week-days">
+                                <li class="m-week-days__item" v-for="(day, index) in weekDays" :key="index">{{day}}</li>
+                            </ul>
+                            <div class="m-month-list js-month-days">
+                                <li v-for="(day, index) in dayInActiveMonth" 
+                                    :key="index"
+                                    :class="
+                                    [
+                                      index == todayDateIndex ? 'today' : '',
+                                      index > monthEndDayIndex ? 'next-month-day' : '',
+                                      index < monthStartDayIndex ? 'prev-month-day' : ''
+                                    ]"
+                                >{{day}}
+                                </li>
+                            </div>
                         </div>
                     </div>
-                    
-                </div>
-                                
+                </div>             
             </div>
         </div>
 </template>
 
 <script>
     import ToDoWeek from "../organisms/todo/todo-week.vue";
+    import ToDoListItem from "../molecules/todo-list-item.vue";
     export default {
         name: "todo-new",
         data() {
             return {
                 months: ["January","February","March","April","May","June","July",
                     "August","September","October","November","December"],
+                weekDays: [ 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
                 selectedMonth:'',
-                activeYear: new Date().getFullYear()
+                activeYear: new Date().getFullYear(),
+                monthStartDayIndex: "",
+                monthEndDayIndex: "",
+                todayDateIndex: '',
+                dayInActiveMonth: [],
             }
         },
         mounted () {
-            this.Calendar3("month-desk",new Date().getFullYear(),new Date().getMonth());
+            this.calendar("month-desk",new Date().getFullYear(),new Date().getMonth());
         },
         methods: {
-            Calendar3(id, year, month) {
+            
+            calendar(id, year, month) {
                 let lastDay = new Date(year,month+1,0).getDate(),
                     lastDate = new Date(year,month,lastDay),
                     weekDayLast = lastDate.getDay(),
                     weekDayFirst = new Date(lastDate.getFullYear(),lastDate.getMonth(),1).getDay(),
-                    calendar = '<div>',
-                    selectedMonth = document.querySelector('#'+id+' option[value="' + lastDate.getMonth() + '"]'),
-                    g = document.querySelector('#'+id+' input');
-                    this.selectedMonth = selectedMonth.textContent;
-                    console.log(calendar)
-                    console.log(g)
+                    selectedMonth = document.querySelector('#'+id+' option[value="' + lastDate.getMonth() + '"]');
+
+                    this.dayInActiveMonth = [];
+                    this.todayDateIndex = null;
+
+                    this.selectedMonth = lastDate.getMonth();
+                    this.monthEndDayIndex = '';
+                    this.monthStartDayIndex = weekDayFirst - 1;
+                    console.log(selectedMonth)
+                    console.log(this.selectedMonth)
                 
-                var lastmonth = 32 - new Date(g.value, selectedMonth.value-1, 32).getDate();
+                var lastmonth = 32 - new Date(this.activeYear, selectedMonth.value-1, 32).getDate();
                     if (weekDayFirst != 0) {
-                        for(var  i = weekDayFirst; i > 1; i--) calendar += '<div style="color: Gray">' + (lastmonth-i);
+                        for(var  i = weekDayFirst; i > 1; i--) {
+                           this.dayInActiveMonth.push(lastmonth-i)
+                        }
                     }else{
-                        for(var  i = 6; i > 0; i--) calendar += '<div style="color: Gray">' + (lastmonth-i);
+                        for(var  i = 6; i > 0; i--) {
+                           this.dayInActiveMonth.push(lastmonth-i)
+                        }
                     }
                 
                 for(var  i = 1; i <= lastDay; i++) {
                     if (i == new Date().getDate() && lastDate.getFullYear() == new Date().getFullYear() && lastDate.getMonth() == new Date().getMonth()) {
-                        calendar += '<div class="today">' + i;
-                    } else {
-                        calendar += '<div>' + i;
+                        this.todayDateIndex = i - 1;
                     }
-                    if (new Date(lastDate.getFullYear(),lastDate.getMonth(),i).getDay() == 0) {
-                        calendar += '<div>';
+                    this.dayInActiveMonth.push(i)
+                }
+                this.monthEndDayIndex = this.dayInActiveMonth.length - 1;
+                let dayaftermonth = 1;
+                 if (weekDayLast != 0) {
+                    for(var  i = weekDayLast; i < 8; i++) {
+                        if(i > weekDayLast) {
+                            this.dayInActiveMonth.push(dayaftermonth)
+                            dayaftermonth ++;
+                        }
                     }
                 }
-                
-                var dayaftermonth = 1;
-                            for(var  i = weekDayLast; i < 8; i++) {
-                            if(i > weekDayLast) {
-                                calendar += '<div style="color: Gray">' + dayaftermonth;
-                                dayaftermonth ++;
-                            }
-                            }
-                        
-                document.querySelector('#'+id+' .js-month-days').innerHTML = calendar;
-                g.value = lastDate.getFullYear();
+                this.activeYear = lastDate.getFullYear();
                 selectedMonth.selected = true;
-                if (document.querySelectorAll('#'+id+' .js-month-days div').length < 6) {
-                    document.querySelector('#'+id+' .js-month-days').innerHTML += '<div><div>&nbsp;<div>&nbsp;<div>&nbsp;<div>&nbsp;<div>&nbsp;<div>&nbsp;<div>&nbsp;';
-                }
-                document.querySelector('#'+id+' option[value="' + new Date().getMonth() + '"]').style.color = 'rgb(230, 33, 33)'; // в выпадающем списке выделен текущий месяц
             },
-            changeMouth (event) {
-                let inputValue = document.querySelector('#month-desk input').value;
-                console.log(inputValue)
-                if(event.target.selectedIndex == 1) {
-                    console.log(11111)
-                    inputValue = inputValue - 1
-                } else if(event.target.selectedIndex == 11) {
-                    console.log(222222)
-                    inputValue = inputValue + 1
-                }
-                console.log(33333)
-                this.Calendar3("month-desk", inputValue, parseFloat(document.querySelector('#month-desk select').options[document.querySelector('#month-desk select').selectedIndex].value));
-            },
+
             getMounth(direction) {
                 let select = document.querySelector('.js-month-select'),
-                    monthSelectedIndex = select.selectedIndex;
+                    monthSelectedIndex = select.selectedIndex,
+                    yearValue = document.querySelector('#month-desk input').value;
 
                 if(direction == 'prev') {
-                    monthSelectedIndex != 0 ? select.selectedIndex = monthSelectedIndex - 1 : select.selectedIndex = 11;
+                    if (monthSelectedIndex != 0) {
+                         select.selectedIndex = monthSelectedIndex - 1
+                    } else {
+                        select.selectedIndex = 11   ;
+                        yearValue = Number(yearValue) - 1;
+                    }
                 } else if (direction == 'next') {
-                    monthSelectedIndex != 11 ? select.selectedIndex = monthSelectedIndex + 1 : select.selectedIndex = 0;
+                    if (monthSelectedIndex != 11) {
+                        select.selectedIndex = monthSelectedIndex + 1 
+                    } else {
+                        select.selectedIndex = 0;
+                        yearValue = Number(yearValue) + 1
+                    }
                 }
-                select.dispatchEvent(new Event('change'))
+                this.activeYear = yearValue;
+                this.calendar("month-desk", yearValue, parseFloat(document.querySelector('#month-desk select').options[document.querySelector('#month-desk select').selectedIndex].value));
             }
         },
         computed: {
         },
         components: {
-            "o-todo-week": ToDoWeek
+            "o-todo-week": ToDoWeek,
+            "m-list-item": ToDoListItem
         }
     }
 </script>
@@ -154,41 +173,58 @@
         text-align: center;
         font-size: 40px;
     }
-    .tg td {font-family:Arial,sans-serif;font-size:14px;padding:5px 8px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#f0f0f0;color:#333;background-color:#fff;}
-    .tg th {font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:5px 10px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#f0f0f0;color:#333;background-color:#f0f0f0;}
-    .tg .tg-s6z2 {text-align: center;}
-    
-    .tg-wrap {
-        float:none;
-        position:relative;
-        padding: 3px;
+    .m-calendar-top-line {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 40px 0;
     }
- 
-    @media screen and (max-width: 767px) {
-        .tg {width: auto !important;}
-        .tg col {width: auto !important;}
-        .tg-wrap {overflow-x: auto;-webkit-overflow-scrolling: touch; margin: auto 0px;}
+    .a-mount-button {
+        position: relative;
+        color: transparent;
+        width: 40px;
+        height: 40px;
+        background: #ffffff;
+        border-radius: 50%;
+        border: none;
+        margin: 0 5px;
+        box-shadow: none;
+        box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        transition: background .2s ease;
+        &:after {
+            content: "";
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            border-bottom: 3px solid #228b22;
+            border-left: 3px solid #228b22;
+            transform: rotate(45deg);
+            transition: border-color .2s ease;
+        }
+        &.prev:after {
+            top: 12px;
+            left: 16px;
+            transform: rotate(45deg)
+        }
+        &.next:after {
+            top: 12px;
+            right: 14px;
+            transform: rotate(-135deg)
+        }
+        &:hover {
+            background: #228b22;
+            &:after {
+                border-color: #ffffff;
+            }
+        }
     }
- 
-    #calendar3 thead tr:last-child, #calendar3 tbody td   {text-align: center;}
- 
-        #calendar3 thead tr:last-child {
-            font-size: small;
-            color: rgb(85, 85, 85);
+    .m-week-days {
+        display: flex;
+        justify-content: space-between;
+        &__item {
+            flex: 1;
+            list-style: none;
+            text-align: center;
         }
-        #calendar3 tbody td {
-            color: rgb(44, 86, 122);
-        }
-        #calendar3 tbody td:nth-child(n+6), #calendar3 .holiday {
-            color: rgb(126, 13, 1);
-        }
-        #calendar3 tbody td.today {
-            outline: 3px solid red;
-        }
-    
-    th.tg-s6z2:nth-child(1) > select:nth-child(1) {
-        padding-left: 15px;
-        height: 30px;
-        border-radius: 3px;
     }
 </style>
