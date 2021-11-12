@@ -29,6 +29,7 @@
         "browser-sync": "^2.27.7",
         "sass-migrator": "^1.5.2",
         "swiper": "^7.2.0",
+        "vue-awesome-swiper": "^4.1.1",
         "vue-router": "^3.5.2"
     }
 }

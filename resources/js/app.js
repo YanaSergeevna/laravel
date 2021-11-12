@@ -36,3 +36,5 @@ const app = new Vue({
 });
 
 window.Swiper = require('swiper');
+
+import Vue from 'vue'
