@@ -12,7 +12,8 @@
     "devDependencies": {
         "axios": "^0.19.2",
         "bootstrap": "^4.6.1",
-        "browser-sync-webpack-plugin": "^2.3.0",
+        "browser-sync": "^2.27.7",
+        "browser-sync-webpack-plugin": "^2.0.1",
         "cross-env": "^7.0.3",
         "jquery": "^3.2",
         "laravel-mix": "^5.0.1",
@@ -26,7 +27,6 @@
     },
     "dependencies": {
         "bootstrap-vue": "^2.21.2",
-        "browser-sync": "^2.27.7",
         "sass-migrator": "^1.5.2",
         "swiper": "^7.2.0",
         "vue-awesome-swiper": "^4.1.1",

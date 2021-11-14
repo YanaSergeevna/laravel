@@ -35,6 +35,9 @@ const app = new Vue({
     router,
 });
 
-window.Swiper = require('swiper');
+//window.Swiper = require('swiper');
 
 import Vue from 'vue'
+
+import VueAwesomeSwiper from 'vue-awesome-swiper'
+Vue.use(VueAwesomeSwiper, /* { default options with global component } */)
