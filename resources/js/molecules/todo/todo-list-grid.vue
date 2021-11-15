@@ -34,12 +34,27 @@
         },
         data: () => ({
             swiperOptions: {
-                slidesPerView: 4,
-                slidesPerGroup:4,
+                slidesPerView: 1,
+                slidesPerGroup:1,
+                simulateTouch: false,
                 navigation: {
                     nextEl: '.column-swiper-button-next',
                     prevEl: '.column-swiper-button-prev'
                 },
+                breakpoints: {
+                    1440: {
+                        slidesPerView: 4,
+                        slidesPerGroup:4,
+                    },
+                    992: {
+                        slidesPerView: 3,
+                        slidesPerGroup:3,
+                    },
+                    640: {
+                        slidesPerView: 2,
+                        slidesPerGroup:2,
+                    }
+                }
             }
         }),
         mounted() {

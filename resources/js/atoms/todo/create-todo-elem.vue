@@ -3,7 +3,7 @@
         <label class="a-todo-elem__circle"></label>
         <textarea ref="textarea"
             :class="[
-                'field',
+                'field'+indexDay,
                 'js-autoresize',
                 filledField ? 'filled-field' : ''
             ]" 
@@ -22,6 +22,9 @@
     props: {
         focusField: {
             typeof: Boolean
+        },
+        indexDay: {
+            typeof: Number
         }
     },
     data: () => ({
@@ -29,15 +32,16 @@
         filledField: false
     }),
     mounted:function(){
-        document.querySelector('.js-autoresize').focus()
+        document.querySelector('.field'+this.indexDay).focus()
         setResizeListeners(this.$el, ".js-autoresize");
     },
     methods: {
-        checkTextarea() {
+        checkTextarea(e) {
             if(this.issueContent != '') {
                 this.filledField = true;
             } else {
                 this.filledField = false;
+                this.$emit("createItemShow", false);
             }
         },
         passValue(evt) {

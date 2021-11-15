@@ -1,5 +1,5 @@
 <template>
-  <li @click="createElem()">
+  <li @click.self="createElem()" :class="{ active: createItemShow }">
       <div class="list-item-header" >
         <div class="list-item-header__today" v-if="hasToday && indexDay == 0">
           Today
@@ -16,6 +16,8 @@
         ></a-todo-elem>
         <a-create-todo-elem v-if="createItemShow"
           @added-value="addedValue"
+          :indexDay="indexDay"
+          @createItemShow="blurElem"
           :class="[
             createItemFocus ? 'active' : ''
           ]"
@@ -65,7 +67,6 @@
     methods: {
       createElem() {
         this.createItemShow = true;
-        console.log('aaaa')
       },
       addedValue(value) {
         if(value != "") {
@@ -76,6 +77,9 @@
         } else {
           this.createItemFocus = false
         }
+      },
+      blurElem() {
+        this.createItemShow = false;
       }
     },
     components: {
@@ -99,18 +103,6 @@
           background: rgb(255,255,255);
           background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(244,188,159,1) 20%, rgba(244,188,159,1) 80%, rgba(255,255,255,1) 100%);
           transform: translate(0, -50%);
-        }
-        &:hover {
-          &:before {
-            content: "";
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 50px;
-            height: 50px;
-            background: url("/images/plus.svg") center/cover;
-          }
         }
     }
     .list-item-header {
