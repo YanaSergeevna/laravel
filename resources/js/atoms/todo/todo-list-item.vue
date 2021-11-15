@@ -1,7 +1,7 @@
 <template>
   <li @click="createElem()">
       <div class="list-item-header" >
-        <div class="list-item-header__today" v-if="hasToday && index == 0">
+        <div class="list-item-header__today" v-if="hasToday && indexDay == 0">
           Today
         </div>
         <div class="list-item-header__day" v-else>
@@ -9,31 +9,37 @@
         </div>
       </div>
       <ul>
-        <a-create-todo-elem v-if="createItemShow"
-          :createItemShow="createItemShow"
-          @added-value="addedValue"
-        />
         <a-todo-elem 
             v-for="(task, index) in tasks"
-            :key="'task'-index"
+            :key="'task'+index" 
             :task="task"
         ></a-todo-elem>
+        <a-create-todo-elem v-if="createItemShow"
+          @added-value="addedValue"
+          :class="[
+            createItemFocus ? 'active' : ''
+          ]"
+        />
       </ul>
   </li>
 </template>
 <script>
   import ToDoElem from "./todo-elem.vue";
   import CreateTodoElem from "./create-todo-elem.vue";
+
   export default {
     name: 'todo-list-item',
     props: {
         day: {
-            type: Object
+          type: Object
         },
         hasToday: {
           type: Boolean
         },
-        index: {
+        indexDay: {
+          type: Number
+        },
+        selectedMonth: {
           type: Number
         },
         selectedMonth: {
@@ -51,17 +57,25 @@
           'Sunday'
         ],
         tasks: [],
-        createItemShow: false
+        createItemShow: false,
+        createItemFocus: false
     }),
     mounted:function(){
     },
     methods: {
       createElem() {
         this.createItemShow = true;
+        console.log('aaaa')
       },
       addedValue(value) {
-        this.tasks.push(value)
-        console.log(this.tasks)
+        if(value != "") {
+          this.tasks.push(value)
+        }
+        if(this.tasks.length > 0) {
+          this.createItemFocus = true
+        } else {
+          this.createItemFocus = false
+        }
       }
     },
     components: {

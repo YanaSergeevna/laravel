@@ -20,7 +20,7 @@
   export default {
     name: 'todo-elem',
     props: {
-        createItemShow: {
+        focusField: {
             typeof: Boolean
         }
     },
@@ -29,6 +29,7 @@
         filledField: false
     }),
     mounted:function(){
+        document.querySelector('.js-autoresize').focus()
         setResizeListeners(this.$el, ".js-autoresize");
     },
     methods: {
@@ -39,19 +40,10 @@
                 this.filledField = false;
             }
         },
-        passValue() {
+        passValue(evt) {
             this.$emit("added-value", this.issueContent);
             this.issueContent = '';
-        }
-    },
-    watch: { 
-      	createItemShow: function(newVal, oldVal) { 
-              console.log('Prop changed: ', newVal, ' | was: ', oldVal)
-            if(newVal == true) {
-                console.log('Prop changed: ', newVal, ' | was: ', oldVal)
-                console.log(1111)
-                document.querySelector('.js-autoresize').focus()
-            }
+            evt.path[0].style.height = "auto";
         }
     }
   }
@@ -79,12 +71,16 @@
         resize: none;
         overflow: hidden;
         padding: 5px 0;
+        border-bottom: 1px solid transparent;
         &:focus {
             outline: none;
-            border-bottom: 1px solid #F4BC9F;
+            background: red;
         }
     }
     .filled-field {
+        border-bottom: 1px solid #F4BC9F;
+    }
+    .a-todo-elem.active .field {
         border-bottom: 1px solid #F4BC9F;
     }
         

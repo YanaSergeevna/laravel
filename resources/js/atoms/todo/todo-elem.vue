@@ -2,13 +2,11 @@
   <li class="a-todo-elem">
         <label class="a-todo-elem__circle"></label>
         <textarea 
-            :class="[
-                'field',
-                'js-autoresize',
-                filledField ? 'filled-field' : ''
-            ]" 
+            class="form-field field" 
             rows="1" 
-            v-model="task" 
+            v-model="task"
+            @keyup.enter.prevent="sendMessage"
+            @keyup.ctrl.enter.prevent="newLine"
         ></textarea>
       <div class="a-todo-elem__settings"></div>
   </li>
@@ -27,9 +25,17 @@
         filledField: false
     }),
     mounted:function(){
-        setResizeListeners(this.$el, ".js-autoresize");
+        setResizeListeners(this.$el, ".form-field");
     },
     methods: {
+        sendMessage() {
+            console.log(111)
+        },
+        newLine(e) {
+            let caret = e.target.selectionStart;
+            e.target.setRangeText("\n", caret, caret, "end");
+            this.text = e.target.value;
+        }
     }
   }
 </script>
@@ -56,9 +62,9 @@
         resize: none;
         overflow: hidden;
         padding: 5px 0;
+        border-bottom: 1px solid #F4BC9F;
         &:focus {
             outline: none;
-            border-bottom: 1px solid #F4BC9F;
         }
     }
     .filled-field {
