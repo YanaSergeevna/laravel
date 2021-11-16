@@ -36,7 +36,7 @@
             swiperOptions: {
                 slidesPerView: 1,
                 slidesPerGroup:1,
-                simulateTouch: false,
+                allowTouchMove: false,
                 navigation: {
                     nextEl: '.column-swiper-button-next',
                     prevEl: '.column-swiper-button-prev'
@@ -81,11 +81,14 @@
    .column-slider-navigation {
        position: relative;
        display: flex;
-       justify-content: flex-end;
+       justify-content: space-between;
    }
    .swiper-wrapper .m-day-item:last-child {
        &::after {
            display: none;
        }
+   }
+   .m-month-container {
+       max-width: 100%;
    }
 </style>

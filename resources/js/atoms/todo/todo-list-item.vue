@@ -9,11 +9,18 @@
         </div>
       </div>
       <ul>
+        <transition name="fade" 
+        v-for="(task, index) in tasks" 
+        :key="'task'+index"
+        :delay="500" >
         <a-todo-elem 
-            v-for="(task, index) in tasks"
-            :key="'task'+index" 
-            :task="task"
+              :task="task"
+              :index="index"
+              @changeTask="changeTask"
+              @removeItem="removeItem"
+              v-show="elemShow"
         ></a-todo-elem>
+        </transition>
         <a-create-todo-elem v-if="createItemShow"
           @added-value="addedValue"
           :indexDay="indexDay"
@@ -60,7 +67,8 @@
         ],
         tasks: [],
         createItemShow: false,
-        createItemFocus: false
+        createItemFocus: false,
+        resolved: []
     }),
     mounted:function(){
     },
@@ -80,6 +88,12 @@
       },
       blurElem() {
         this.createItemShow = false;
+      },
+      changeTask(value, index) {
+        this.tasks[index] = value
+      },
+      removeItem() {
+        console.log(11111)
       }
     },
     components: {
@@ -129,4 +143,10 @@
         } 
       }
     }
+    .fade-enter-active, .fade-leave-active {
+        transition: opacity .5s;
+    }
+    .fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
+        opacity: 0;
+    }  
 </style>

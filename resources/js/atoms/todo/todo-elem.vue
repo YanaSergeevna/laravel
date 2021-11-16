@@ -1,19 +1,18 @@
 <template>
-  <li class="a-todo-elem">
-        <label :class="[
-                'a-todo-elem__circle', 
-                checkedItem ? 'active' : ''
-                ]" 
-                @click="checkItem"></label>
-        <textarea 
-            class="form-field field" 
-            rows="1" 
-            v-model="task"
-            v-on:keydown.enter.prevent.exact='saveItem'
-            @keydown.prevent.ctrl.enter="newLine"
-        ></textarea>
-      <div class="a-todo-elem__settings"></div>
-  </li>
+    <li class="a-todo-elem" >
+            <label :class="[
+                    'a-todo-elem__circle', 
+                    checkedItem ? 'active' : ''
+                    ]" 
+                    @click="checkItem"></label>
+            <textarea 
+                class="form-field field" 
+                rows="1" 
+                v-model="task"
+                @blur="$emit('changeTask', task, index)"
+            ></textarea>
+        <div class="a-todo-elem__settings"></div>
+    </li>
 </template>
 <script>
   import { setResizeListeners } from "../../helpers/auto-resize.js";
@@ -22,28 +21,26 @@
     props: {
         task: {
             typeof: String
+        },
+        index: {
+            typeof: Number
         }
     },
     data: () => ({
         issueContent: '',
         filledField: false,
-        checkedItem: false
+        checkedItem: false,
+        elemShow: true,
+        resolved: []
     }),
     mounted:function(){
         setResizeListeners(this.$el, ".form-field");
     },
     methods: {
-        newLine(e) {
-            let caret = e.target.selectionStart;
-            e.target.setRangeText("\n", caret, caret, "end");
-            this.text = e.target.value;
-        },
-        saveItem(e) {
-            e.target.blur()
-        },
-        checkItem(e) {
+        checkItem() {
             this.checkedItem = true
-        }
+            this.$emit("v-show", false);
+        },
     }
   }
 </script>
@@ -105,6 +102,6 @@
             background: url("/images/plus.svg") center/cover;
             z-index: -1;
         }
-    }
+    } 
         
 </style>
