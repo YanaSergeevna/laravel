@@ -78,7 +78,7 @@
         border-bottom: 1px solid transparent;
         &:focus {
             outline: none;
-            background: red;
+            border-bottom: 1px solid #F4BC9F;
         }
     }
     .filled-field {

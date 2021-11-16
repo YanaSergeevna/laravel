@@ -11,15 +11,13 @@
       <ul>
         <transition name="fade" 
         v-for="(task, index) in tasks" 
-        :key="'task'+index"
-        :delay="500" >
-        <a-todo-elem 
-              :task="task"
-              :index="index"
-              @changeTask="changeTask"
-              @removeItem="removeItem"
-              v-show="elemShow"
-        ></a-todo-elem>
+        :key="'task'+index">
+          <a-todo-elem 
+                :task="task"
+                :index="index"
+                @changeTask="changeTask"
+                @removeItem="removeItem"
+          ></a-todo-elem>
         </transition>
         <a-create-todo-elem v-if="createItemShow"
           @added-value="addedValue"
@@ -35,6 +33,7 @@
 <script>
   import ToDoElem from "./todo-elem.vue";
   import CreateTodoElem from "./create-todo-elem.vue";
+  import { setResizeListeners } from "../../helpers/auto-resize.js";
 
   export default {
     name: 'todo-list-item',
@@ -92,8 +91,12 @@
       changeTask(value, index) {
         this.tasks[index] = value
       },
-      removeItem() {
-        console.log(11111)
+      removeItem(index, elem) {
+        setTimeout(() => {
+          let resolvedTask = this.tasks.splice(index, 1)
+          this.resolved = this.resolved.concat(resolvedTask);
+          elem.classList.remove('active')
+        }, 1000)
       }
     },
     components: {

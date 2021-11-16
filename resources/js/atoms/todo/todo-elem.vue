@@ -1,10 +1,8 @@
 <template>
     <li class="a-todo-elem" >
-            <label :class="[
-                    'a-todo-elem__circle', 
-                    checkedItem ? 'active' : ''
-                    ]" 
-                    @click="checkItem"></label>
+            <label class="a-todo-elem__circle" 
+                @click="checkItem">
+            </label>
             <textarea 
                 class="form-field field" 
                 rows="1" 
@@ -15,34 +13,34 @@
     </li>
 </template>
 <script>
-  import { setResizeListeners } from "../../helpers/auto-resize.js";
-  export default {
-    name: 'todo-elem',
-    props: {
-        task: {
-            typeof: String
+    import { setResizeListeners } from "../../helpers/auto-resize.js";
+    export default {
+        name: 'todo-elem',
+        props: {
+            task: {
+                typeof: String
+            },
+            index: {
+                typeof: Number
+            }
         },
-        index: {
-            typeof: Number
+        data: () => ({
+            issueContent: '',
+            filledField: false,
+            elemShow: true,
+            resolved: []
+        }),
+        mounted:function(){
+            setResizeListeners(this.$el, ".form-field");
+        },
+        methods: {
+            checkItem(e) {
+                let elem = e.target;
+                elem.classList.add('active')
+                this.$emit('removeItem', this.index, elem)
+            }
         }
-    },
-    data: () => ({
-        issueContent: '',
-        filledField: false,
-        checkedItem: false,
-        elemShow: true,
-        resolved: []
-    }),
-    mounted:function(){
-        setResizeListeners(this.$el, ".form-field");
-    },
-    methods: {
-        checkItem() {
-            this.checkedItem = true
-            this.$emit("v-show", false);
-        },
     }
-  }
 </script>
 <style scoped lang="scss">
     .a-todo-elem {
