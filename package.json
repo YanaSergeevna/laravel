@@ -30,6 +30,7 @@
         "sass-migrator": "^1.5.2",
         "swiper": "^5.4.5",
         "vue-awesome-swiper": "^4.1.1",
+        "vue-draggable": "^2.0.6",
         "vue-router": "^3.5.2"
     }
 }

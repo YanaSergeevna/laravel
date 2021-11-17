@@ -1,22 +1,22 @@
 <template>
 <transition name="slide-fade">
-    <li class="a-todo-elem" v-if="show">
-        <label class="a-todo-elem__circle" 
+    <div class="a-todo-elem"  v-if="show">
+        <label class="a-todo-elem__circle active"
             @click="checkItem">
         </label>
         <textarea 
             class="form-field field" 
-            rows="1" 
+            rows="1"
             v-model="task"
             @blur="saveValue()"
         ></textarea>
-    </li>
+    </div>
 </transition>
 </template>
 <script>
     import { setResizeListeners } from "../../helpers/auto-resize.js";
     export default {
-        name: 'todo-elem',
+        name: 'todo-resolved-item',
         props: {
             task: {
                 typeof: String
@@ -26,10 +26,6 @@
             }
         },
         data: () => ({
-            issueContent: '',
-            filledField: false,
-            elemShow: true,
-            resolved: [],
             show: true
         }),
         mounted:function(){
@@ -38,19 +34,16 @@
         methods: {
             checkItem(e) {
                 let elem = e.target;
-                elem.classList.add('active')
-                setTimeout(()=>{
-                    this.show = false;
-                },1000)
-                this.$emit('removeItem', this.index, 'active')
+                elem.classList.remove('active')
+                this.show = false;
+                this.$emit('removeItem', this.index, 'resolved')
             },
             saveValue() {
                 if(this.task != "") {
-                    this.$emit('changeTask', this.task, this.index, 'active')
+                    this.$emit('changeTask', this.task, this.index, 'resolved')
                 } else {
                     this.show = false
                 }
-                
             }
 
         }
@@ -116,4 +109,5 @@
         transform: translateX(10px);
         opacity: 0;
     }
+        
 </style>

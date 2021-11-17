@@ -1,6 +1,6 @@
 <template>
     <div v-swiper:mySwiper="swiperOptions" class="m-month-container column-swiper">
-        <div class="swiper-wrapper">
+        <div class="swiper-wrapper drag-list" >
             <m-list-item
                 v-for="(day, index) in daysObj"
                 :key="'Day'+ index"
@@ -8,17 +8,22 @@
                 :indexDay="index"
                 :hasToday="hasToday"
                 :selectedMonth="selectedMonth"
+                :showResolved="showResolved"
                 class="m-day-item swiper-slide"
             >
             </m-list-item>
         </div>
-        <a-slider-navigation class="column-slider-navigation"></a-slider-navigation>
+        <a-slider-navigation 
+            class="column-slider-navigation"
+            @showResolved="showResolvedItem"
+        ></a-slider-navigation>
     </div>
 </template>
 <script>
     import { Swiper, SwiperSlide, directive } from 'vue-awesome-swiper'
     import ToDoListItem from "../../atoms/todo/todo-list-item.vue";
     import ToDoSliderNavigation from "../../atoms/todo/todo-slider-navigation.vue";
+
     export default {
         name: 'todo-list-grid',
         props: {
@@ -33,6 +38,7 @@
             }
         },
         data: () => ({
+            showResolved: false,
             swiperOptions: {
                 slidesPerView: 1,
                 slidesPerGroup:1,
@@ -55,11 +61,31 @@
                         slidesPerGroup:2,
                     }
                 }
+            },
+            options: {
+                dropzoneSelector: ".drag-inner-list",
+                draggableSelector: ".drag-item",
+                handlerSelector: null,
+                reactivityEnabled: true,
+                multipleDropzonesItemsDraggingEnabled: true,
+                showDropzoneAreas: true,
+                onDrop: function(event) {},
+                onDragstart: function(event) {},
+                onDragenter: function(event) {},
+                onDragover: function(event) {},
+                onDragend: function(event) {}
             }
         }),
         mounted() {
         },
         methods: {
+            showResolvedItem() {
+                if( !this.showResolved) {
+                    this.showResolved = true
+                } else {
+                    this.showResolved = false
+                }
+            }
         },
         computed: {
             swiper() {

@@ -150,37 +150,33 @@
         color: transparent;
         width: 40px;
         height: 40px;
-        background: #ffffff;
-        border-radius: 50%;
         border: none;
         margin: 0 5px;
+        background: transparent;
         box-shadow: none;
-        box-shadow: 0 0 10px rgba(0,0,0,0.5);
-        transition: background .2s ease;
         &:after {
             content: "";
             position: absolute;
-            width: 15px;
-            height: 15px;
-            border-bottom: 3px solid #228b22;
-            border-left: 3px solid #228b22;
+            width: 12px;
+            height: 12px;
+            border-bottom: 3px solid #000000;
+            border-left: 3px solid #000000;
             transform: rotate(45deg);
             transition: border-color .2s ease;
         }
         &.prev:after {
-            top: 12px;
+            top: 8px;
             left: 16px;
             transform: rotate(45deg)
         }
         &.next:after {
-            top: 12px;
+            top: 8px;
             right: 14px;
             transform: rotate(-135deg)
         }
         &:hover {
-            background: #228b22;
             &:after {
-                border-color: #ffffff;
+                opacity: .5;
             }
         }
     }

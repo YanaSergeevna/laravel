@@ -63,7 +63,7 @@
         height: 20px;
         border-radius: 50%;
         flex-shrink: 0;
-        border: 1px solid #cecece;
+        border: 2px solid #cecece;
         margin: 5px 10px 0 0;
     }
     textarea {

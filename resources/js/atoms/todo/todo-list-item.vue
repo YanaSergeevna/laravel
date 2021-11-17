@@ -8,17 +8,29 @@
           {{weekDays[day.weekDay]}}<span class="date">{{day.day}}.{{selectedMonth + 1}}</span>
         </div>
       </div>
-      <ul>
-        <transition name="fade" 
-        v-for="(task, index) in tasks" 
-        :key="'task'+index">
+      <ul class="a-items-list drag-inner-list drag-wrapper" v-drag-and-drop:options="options">
           <a-todo-elem 
+                v-for="(task, index) in tasks" 
+                :key="'task'+index"
                 :task="task"
                 :index="index"
                 @changeTask="changeTask"
                 @removeItem="removeItem"
+                class="drag-item"
           ></a-todo-elem>
-        </transition>
+        <li class="a-resolved-item" 
+          v-if="showResolved">
+          <a-todo-resolved-elem
+          v-for="(resolve, index) in resolved"
+          :key="'resolveTask'+index"
+          :task="resolve"
+          :index="index"
+          @changeTask="changeTask"
+          @removeItem="removeItem"
+          >
+          </a-todo-resolved-elem>
+        </li>
+
         <a-create-todo-elem v-if="createItemShow"
           @added-value="addedValue"
           :indexDay="indexDay"
@@ -28,12 +40,16 @@
           ]"
         />
       </ul>
+       </vue-draggable-group>
   </li>
 </template>
 <script>
   import ToDoElem from "./todo-elem.vue";
+  import ToDoResolvedElem from "./todo-resolved-item.vue";
   import CreateTodoElem from "./create-todo-elem.vue";
-  import { setResizeListeners } from "../../helpers/auto-resize.js";
+  
+  import { VueDraggableDirective } from 'vue-draggable'
+  
 
   export default {
     name: 'todo-list-item',
@@ -52,6 +68,9 @@
         },
         selectedMonth: {
           type: Number
+        },
+        showResolved: {
+          type: Boolean
         }
     },
     data: () => ({
@@ -79,7 +98,7 @@
         if(value != "") {
           this.tasks.push(value)
         }
-        if(this.tasks.length > 0) {
+        if(this.tasks.length > 0) { 
           this.createItemFocus = true
         } else {
           this.createItemFocus = false
@@ -88,22 +107,35 @@
       blurElem() {
         this.createItemShow = false;
       },
-      changeTask(value, index) {
-        this.tasks[index] = value
-      },
-      removeItem(index, elem) {
-        setTimeout(() => {
-          let resolvedTask = this.tasks.splice(index, 1)
-          this.resolved = this.resolved.concat(resolvedTask);
-          elem.classList.remove('active')
-        }, 1000)
+      changeTask(value, index, status) {
+        if(status == 'active') {
+          this.tasks[index] = value
+        } else {
+          this.resolved[index]  = value
+        }
+        
+      },  
+      removeItem(index, status) {
+        setTimeout(()=>{
+          if(status == 'active') {
+            this.resolved.push(this.tasks[index])
+          } else {
+            this.tasks.push(this.resolved[index])
+          }
+        },1000)
+          // let resolvedTask = this.tasks.splice(index, 1)
+          // this.resolved = this.resolved.concat(resolvedTask);
       }
     },
     components: {
       'a-todo-elem': ToDoElem,
+      'a-todo-resolved-elem': ToDoResolvedElem,
       'a-create-todo-elem': CreateTodoElem
+    },
+    directives: {
+      dragAndDrop: VueDraggableDirective
     }
-  };
+  }
 </script>
 <style scoped lang="scss">
     .m-day-item {
@@ -146,10 +178,36 @@
         } 
       }
     }
-    .fade-enter-active, .fade-leave-active {
-        transition: opacity .5s;
+    .a-items-list {
+      position: relative;
+      &:before {
+        content: "";
+        position: absolute;
+        top: calc(100% + 10px);
+        left: 50%;
+        width: 20px;
+        height: 20px;
+        background: url("/images/plus.svg") center/cover;
+        z-index: 1;
+        display: none;
+      }
     }
-    .fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
-        opacity: 0;
-    }  
+    .m-day-item:hover {
+      .a-items-list {
+        &:before {
+          display: block;
+        }
+      }
+    }
+    .m-day-item.active {
+      .a-items-list {
+        &:before {
+          display: none;
+        }
+      }
+    }
+    .a-resolved-item {
+      list-style-type: none;
+    }
+  
 </style>
