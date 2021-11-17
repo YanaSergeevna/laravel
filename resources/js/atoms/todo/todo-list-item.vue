@@ -8,7 +8,15 @@
           {{weekDays[day.weekDay]}}<span class="date">{{day.day}}.{{selectedMonth + 1}}</span>
         </div>
       </div>
-      <ul class="a-items-list drag-inner-list drag-wrapper" v-drag-and-drop:options="options">
+      <ul class="a-items-list" >
+        <draggable 
+        v-model="tasks" 
+        :options="{group:'people'}"
+        @start="drag=true" 
+        @end="drag=false"
+        class="list-group"
+        ghost-class="ghost"
+        >
           <a-todo-elem 
                 v-for="(task, index) in tasks" 
                 :key="'task'+index"
@@ -18,6 +26,8 @@
                 @removeItem="removeItem"
                 class="drag-item"
           ></a-todo-elem>
+        </draggable>
+
         <li class="a-resolved-item" 
           v-if="showResolved">
           <a-todo-resolved-elem
@@ -40,7 +50,6 @@
           ]"
         />
       </ul>
-       </vue-draggable-group>
   </li>
 </template>
 <script>
@@ -48,7 +57,8 @@
   import ToDoResolvedElem from "./todo-resolved-item.vue";
   import CreateTodoElem from "./create-todo-elem.vue";
   
-  import { VueDraggableDirective } from 'vue-draggable'
+  import draggable from 'vuedraggable'
+
   
 
   export default {
@@ -130,10 +140,8 @@
     components: {
       'a-todo-elem': ToDoElem,
       'a-todo-resolved-elem': ToDoResolvedElem,
-      'a-create-todo-elem': CreateTodoElem
-    },
-    directives: {
-      dragAndDrop: VueDraggableDirective
+      'a-create-todo-elem': CreateTodoElem,
+      draggable
     }
   }
 </script>
@@ -178,20 +186,20 @@
         } 
       }
     }
-    .a-items-list {
-      position: relative;
-      &:before {
-        content: "";
-        position: absolute;
-        top: calc(100% + 10px);
-        left: 50%;
-        width: 20px;
-        height: 20px;
-        background: url("/images/plus.svg") center/cover;
-        z-index: 1;
-        display: none;
-      }
-    }
+    // .a-items-list {
+    //   position: relative;
+    //   &:before {
+    //     content: "";
+    //     position: absolute;
+    //     top: calc(100% + 10px);
+    //     left: 50%;
+    //     width: 20px;
+    //     height: 20px;
+    //     background: url("/images/plus.svg") center/cover;
+    //     z-index: 1;
+    //     display: none;
+    //   }
+    // }
     .m-day-item:hover {
       .a-items-list {
         &:before {
@@ -209,5 +217,10 @@
     .a-resolved-item {
       list-style-type: none;
     }
-  
+    .drag-item {
+        cursor: move;
+        textarea {
+          cursor: move;
+        }
+    }
 </style>

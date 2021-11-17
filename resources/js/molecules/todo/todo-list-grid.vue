@@ -1,6 +1,6 @@
 <template>
     <div v-swiper:mySwiper="swiperOptions" class="m-month-container column-swiper">
-        <div class="swiper-wrapper drag-list" >
+        <div class="swiper-wrapper" >
             <m-list-item
                 v-for="(day, index) in daysObj"
                 :key="'Day'+ index"
@@ -61,19 +61,6 @@
                         slidesPerGroup:2,
                     }
                 }
-            },
-            options: {
-                dropzoneSelector: ".drag-inner-list",
-                draggableSelector: ".drag-item",
-                handlerSelector: null,
-                reactivityEnabled: true,
-                multipleDropzonesItemsDraggingEnabled: true,
-                showDropzoneAreas: true,
-                onDrop: function(event) {},
-                onDragstart: function(event) {},
-                onDragenter: function(event) {},
-                onDragover: function(event) {},
-                onDragend: function(event) {}
             }
         }),
         mounted() {

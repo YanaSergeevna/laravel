@@ -1,6 +1,6 @@
 <template>
 <transition name="slide-fade">
-    <li class="a-todo-elem" v-if="show">
+    <li class="a-todo-elem" v-show="show">
         <label class="a-todo-elem__circle" 
             @click="checkItem">
         </label>
@@ -99,6 +99,7 @@
         overflow: hidden;
         padding: 5px 0;
         border-bottom: 1px solid #F4BC9F;
+        cursor: move;
         &:focus {
             outline: none;
         }
