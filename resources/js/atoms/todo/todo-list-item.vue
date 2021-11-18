@@ -1,5 +1,5 @@
 <template>
-  <li @click.self="createElem()" :class="{ active: createItemShow }">
+  <li :class="{ active: createItemShow }">
       <div class="list-item-header" >
         <div class="list-item-header__today" v-if="hasToday && indexDay == 0">
           Today
@@ -8,7 +8,7 @@
           {{weekDays[day.weekDay]}}<span class="date">{{day.day}}.{{selectedMonth + 1}}</span>
         </div>
       </div>
-      <ul class="a-items-list" >
+      <ul class="a-items-list">
         <draggable 
         v-model="tasks" 
         :options="{group:'people'}"
@@ -16,6 +16,7 @@
         @end="drag=false"
         class="list-group"
         ghost-class="ghost"
+        @click.native.self="createElem()"
         >
           <a-todo-elem 
                 v-for="(task, index) in tasks" 
@@ -25,30 +26,29 @@
                 @changeTask="changeTask"
                 @removeItem="removeItem"
                 class="drag-item"
-          ></a-todo-elem>
+          />
+          <li class="a-resolved-item" 
+            v-if="showResolved">
+            <a-todo-resolved-elem
+            v-for="(resolve, index) in resolved"
+            :key="'resolveTask'+index"
+            :task="resolve"
+            :index="index"
+            @changeTask="changeTask"
+            @removeItem="removeItem"
+            />
+          </li>
         </draggable>
-
-        <li class="a-resolved-item" 
-          v-if="showResolved">
-          <a-todo-resolved-elem
-          v-for="(resolve, index) in resolved"
-          :key="'resolveTask'+index"
-          :task="resolve"
-          :index="index"
-          @changeTask="changeTask"
-          @removeItem="removeItem"
-          >
-          </a-todo-resolved-elem>
-        </li>
-
-        <a-create-todo-elem v-if="createItemShow"
-          @added-value="addedValue"
-          :indexDay="indexDay"
-          @createItemShow="blurElem"
-          :class="[
-            createItemFocus ? 'active' : ''
-          ]"
-        />
+        <a-create-todo-elem
+            class="a-create-elem"
+            v-if="createItemShow"
+            @added-value="addedValue"
+            :indexDay="indexDay"
+            @createItemShow="blurElem"
+            :class="[
+              createItemFocus ? 'active' : ''
+            ]"
+          />
       </ul>
   </li>
 </template>
@@ -106,7 +106,7 @@
       },
       addedValue(value) {
         if(value != "") {
-          this.tasks.push(value)
+          this.tasks.push(value.trim())
         }
         if(this.tasks.length > 0) { 
           this.createItemFocus = true
@@ -119,9 +119,9 @@
       },
       changeTask(value, index, status) {
         if(status == 'active') {
-          this.tasks[index] = value
+          this.tasks[index] = value.trim()
         } else {
-          this.resolved[index]  = value
+          this.resolved[index]  = value.trim()
         }
         
       },  
@@ -200,6 +200,19 @@
     //     display: none;
     //   }
     // }
+    .a-items-list {
+      display: flex;
+      flex-direction: column;
+      height: calc(100% - 35px);
+      .list-group {
+        flex-grow: 1;
+      }
+    }
+    .m-day-item.active {
+      .list-group {
+        flex-grow: inherit;
+      }
+    }
     .m-day-item:hover {
       .a-items-list {
         &:before {

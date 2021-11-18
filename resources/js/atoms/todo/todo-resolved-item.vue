@@ -14,7 +14,6 @@
 </transition>
 </template>
 <script>
-    import { setResizeListeners } from "../../helpers/auto-resize.js";
     export default {
         name: 'todo-resolved-item',
         props: {
@@ -29,7 +28,6 @@
             show: true
         }),
         mounted:function(){
-            setResizeListeners(this.$el, ".form-field");
         },
         methods: {
             checkItem(e) {

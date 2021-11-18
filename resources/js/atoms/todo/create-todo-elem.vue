@@ -1,22 +1,23 @@
 <template>
   <li class="a-todo-elem">
         <label class="a-todo-elem__circle"></label>
-        <textarea ref="textarea"
-            :class="[
+        <TextareaAutosize
+        :min-height="30"
+        :max-height="350"
+        :class="[
                 'field'+indexDay,
                 'js-autoresize',
                 filledField ? 'filled-field' : ''
             ]" 
             rows="1" 
             v-model="issueContent" 
-            @blur="checkTextarea"
-            @change="passValue"
-        ></textarea>
+            @blur.native="checkTextarea"
+            @change.native="passValue"
+      />
       <div class="a-todo-elem__settings"></div>
   </li>
 </template>
 <script>
-  import { setResizeListeners } from "../../helpers/auto-resize.js";
   export default {
     name: 'todo-elem',
     props: {
@@ -33,7 +34,6 @@
     }),
     mounted:function(){
         document.querySelector('.field'+this.indexDay).focus()
-        setResizeListeners(this.$el, ".js-autoresize");
     },
     methods: {
         checkTextarea(e) {
